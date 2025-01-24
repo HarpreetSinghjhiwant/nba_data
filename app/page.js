@@ -1,56 +1,139 @@
 "use client";
 
-import { DataTableDemo } from "@/components/parts/marks_data";
-import { useState } from "react";
+import { TableDemo } from "@/components/parts/coPerMarks";
+import { FinalCOMarks } from "@/components/parts/finalCOMarks";
+import { DataTableDemo } from "@/components/parts/marksData";
+import { useState,useEffect } from "react";
 
 export default function Home() {
   const [expandedRow, setExpandedRow] = useState(null); // Track the expanded row index
-  const [min1CO, setMinor1CO] = useState(
+  const [min1CO, setMin1CO] = useState(
     [
       {
-        CO1: "",
-        CO2: "",
-        CO3: "",
-        CO4: "",
-        CO5: "",
-        CO6: "",
-      }
+        CO1: "0",
+        CO2: "0",
+        CO3: "0",
+        CO4: "0",
+        CO5: "0",
+        CO6: "0",
+      },
     ]
   );
-  const [min2CO, setMinor2CO] = useState(
+  const [min2CO, setMin2CO] = useState(
     [
       {
-        CO1: "",
-        CO2: "",
-        CO3: "",
-        CO4: "",
-        CO5: "",
-        CO6: "",
-      }
+        CO1: "0",
+        CO2: "0",
+        CO3: "0",
+        CO4: "0",
+        CO5: "0",
+        CO6: "0",
+      },
     ]
   );
   const [finCO, setfinCO] = useState(
     [
       {
-        CO1: "",
-        CO2: "",
-        CO3: "",
-        CO4: "",
-        CO5: "",
-        CO6: "",
-      }
+        CO1: "0",
+        CO2: "0",
+        CO3: "0",
+        CO4: "0",
+        CO5: "0",
+        CO6: "0",
+      },
     ]
   );
   const [assCO, setassCO] = useState([
     {
-      CO1: "",
-      CO2: "",
-      CO3: "",
-      CO4: "",
-      CO5: "",
-      CO6: "",
-    }
+      CO1: "0",
+      CO2: "0",
+      CO3: "0",
+      CO4: "0",
+      CO5: "0",
+      CO6: "0",
+    },
   ]);
+  const [directData, setDirectData] = useState([]);
+
+  const [inDirectData, setInDirectData] = useState(
+    [
+      {
+        COs: "Course Survey Feedback",
+        CO1: "0",
+        CO2: "0",
+        CO3: "0",
+        CO4: "0",
+        CO5: "0",
+        CO6: "0",
+      },
+    ]
+  )
+
+  const [overallData, setOverallData] = useState([]);
+
+  useEffect(() => {
+    calculateDirectData();
+  }, [min1CO, min2CO, assCO, finCO]);
+
+  useEffect(() => {
+    calculateOverallData();
+  }, [directData, inDirectData]);
+
+  const calculateDirectData = () => {
+    const coKeys = ["CO1", "CO2", "CO3", "CO4", "CO5", "CO6"];
+
+    // Calculate Minor (max of min1CO and min2CO)
+    const minor = coKeys.reduce((acc, co) => {
+      acc[co] = Math.max(
+        parseFloat(min1CO[0][co]),
+        parseFloat(min2CO[0][co])
+      ).toFixed(2);
+      return acc;
+    }, {});
+
+    // Calculate Minor * 0.3 + Assignment * 0.2 + ESE * 0.5
+    const weighted = coKeys.reduce((acc, co) => {
+      acc[co] = (
+        minor[co] * 0.3 +
+        assCO[0][co] * 0.2 +
+        finCO[0][co] * 0.5
+      ).toFixed(2);
+      return acc;
+    }, {});
+
+    // Prepare directData
+    const data = [
+      { COs: "Minor", ...minor },
+      { COs: "Assignment", ...assCO[0] },
+      { COs: "ESE", ...finCO[0] },
+      { COs: "Total", ...weighted },
+    ];
+    setDirectData(data);
+  };
+
+  const calculateOverallData = () => {
+    if (!directData.length || !inDirectData.length) return;
+
+    const coKeys = ["CO1", "CO2", "CO3", "CO4", "CO5", "CO6", "CO7", "CO8", "CO9", "CO10"];
+
+    // Get weighted row from directData
+    const weightedDirect = directData.find((row) => row.COs === "Total");
+
+    // Calculate average for overall attainment
+    const overall = coKeys.reduce((acc, co) => {
+      acc[co] = (
+        (parseFloat(weightedDirect[co]) + parseFloat(inDirectData[0][co])) /
+        2
+      ).toFixed(2);
+      return acc;
+    }, {});
+
+    // Prepare overallData
+    const data = [{ COs: "Overall Attainment", ...overall }];
+    setOverallData(data);
+  };
+
+
 
   const toggleRow = (rowIndex) => {
     if (expandedRow === rowIndex) {
@@ -70,7 +153,7 @@ export default function Home() {
 
       {expandedRow === 0 && (
         <DataTableDemo
-          data={min1CO} setData={setMinor1CO}
+          coData={min1CO} setCoData={setMin1CO}
         />
       )}
 
@@ -82,8 +165,8 @@ export default function Home() {
 
       {expandedRow === 1 && (
         <DataTableDemo
-          data={min2CO}
-          setData={setMinor2CO}
+          coData={min2CO}
+          setCoData={setMin2CO}
         />
       )}
 
@@ -94,8 +177,8 @@ export default function Home() {
 
       {expandedRow === 2 && (
         <DataTableDemo
-          data={assCO}
-          setData={setassCO}
+        coData={assCO}
+          setCoData={setassCO}
         />
       )}
 
@@ -106,9 +189,22 @@ export default function Home() {
 
       {expandedRow === 3 && (
         <DataTableDemo
-          data={finCO}
-          setData={setfinCO}
+        coData={finCO}
+          setCoData={setfinCO}
         />
+      )}
+
+      <div className="flex items-center gap-2 cursor-pointer bg-gray-400 w-full p-2 rounded-xl" onClick={() => toggleRow(4)}>
+        <span className="text-xl">{expandedRow === 4 ? "↑" : "↓"}</span> {/* Toggle Arrow */}
+        <span>Final CO Calculation</span>
+      </div>
+
+      {expandedRow === 4 && (
+          <FinalCOMarks
+            directData={directData}
+            overallData={overallData}
+            inDirectData={inDirectData}
+          />
       )}
     </div>
   );
