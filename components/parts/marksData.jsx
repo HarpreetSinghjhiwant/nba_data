@@ -5,7 +5,6 @@ import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-tabl
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -21,9 +20,9 @@ import {
 } from "@/components/ui/select";
 import { TableDemo } from "./coPerMarks";
 import { motion } from "framer-motion";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog"; // ShadCN Dialog
 
-
-export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOFin }) {
+export function DataTableDemo({ coData, setCoData, coMin, setCOMin, coFin, setCOFin }) {
   const [data, setData] = [coData, setCoData];
   const [selectedRows, setSelectedRows] = useState([]);
   const [filters, setFilters] = useState({
@@ -31,48 +30,46 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
     value: "",
   });
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [thresholds, setThresholds] = useState({});
+
   const handleUpdateCO = () => {
     const totalStudents = data.length;
-
+  
     if (totalStudents === 0) {
       alert("No student data available.");
       return;
     }
-
+  
     const updatedCoFin = { ...coFin[0] };
-
+  
     Object.keys(coMin[0]).forEach((coKey) => {
       const coThreshold = parseFloat(coMin[0][coKey]);
       const studentsAboveThreshold = data.filter(
         (student) => parseFloat(student[coKey]) > coThreshold
       ).length;
-
+  
       const percentage = (studentsAboveThreshold / totalStudents) * 100;
-
-      if (percentage >= 70) {
+  
+      // Get the latest threshold values from the state (thresholds)
+      const threshold70 = parseFloat(thresholds["3"]) || 70;
+      const threshold60 = parseFloat(thresholds["2"]) || 60;
+      const threshold50 = parseFloat(thresholds["1"]) || 50;
+  
+      if (percentage >= threshold70) {
         updatedCoFin[coKey] = "3";
-      } else if (percentage >= 60) {
+      } else if (percentage >= threshold60) {
         updatedCoFin[coKey] = "2";
-      } else if (percentage >= 50) {
+      } else if (percentage >= threshold50) {
         updatedCoFin[coKey] = "1";
       } else {
         updatedCoFin[coKey] = "0";
       }
     });
-
+  
     setCOFin([updatedCoFin]);
   };
-
-  const memoizedData = useMemo(() => {
-    if (filters.column && filters.value) {
-      return data.filter((row) =>
-        String(row[filters.column])
-          .toLowerCase()
-          .includes(filters.value.toLowerCase())
-      );
-    }
-    return data;
-  }, [data, filters]);
+  
 
   const handleInputChange = useCallback((rowIndex, columnId) => (e) => {
     const value = e.target.value;
@@ -117,6 +114,21 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
     );
   };
 
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleThresholdChange = (coKey, value) => {
+    setThresholds((prevThresholds) => ({
+      ...prevThresholds,
+      [coKey]: value,
+    }));
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -139,7 +151,7 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder="Roll No."
-            className="dark:bg-gray-800 dark:text-white border-none bg-white" // Dark mode styles
+            className="dark:bg-gray-800 dark:text-white border-none bg-white"
           />
         ),
       },
@@ -152,7 +164,7 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder="Student Name"
-            className="dark:bg-gray-800 dark:text-white border-none bg-white" // Dark mode styles
+            className="dark:bg-gray-800 dark:text-white border-none bg-white"
           />
         ),
       },
@@ -165,7 +177,7 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder={`CO${idx + 1}`}
-            className="dark:bg-gray-800 dark:text-white bg-white border-none" // Dark mode styles
+            className="dark:bg-gray-800 dark:text-white bg-white border-none"
           />
         ),
       })),
@@ -174,7 +186,7 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
   );
 
   const table = useReactTable({
-    data: memoizedData,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -191,9 +203,10 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
           Delete Selected
         </Button>
         <Button onClick={handleUpdateCO}>Update CO Values</Button>
+        <Button onClick={handleDialogOpen}>Update Thresholds</Button> {/* Open Dialog */}
       </div>
-      <div className="rounded-md bg-white p-4 shadow-md text-center border-black border-2 dark:bg-gray-800 dark:border-gray-700 ">
-        <div className="flex gap-4 mb-4 w-[50%] ">
+      <div className="rounded-md bg-white p-4 shadow-md text-center border-black border-2 dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex gap-4 mb-4 w-[50%]">
           <Select onValueChange={(value) => handleFilterChange("column", value)}>
             <SelectTrigger className="dark:border-white border-black">
               <SelectValue placeholder="Select Column" />
@@ -216,7 +229,7 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
             className="dark:bg-gray-800 dark:text-white dark:border-white border-black"
           />
         </div>
-        <div className="overflow-auto max-h-[500px] ">
+        <div className="overflow-auto max-h-[500px]">
           <Table>
             <TableHeader className="dark:bg-gray-800">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -256,6 +269,45 @@ export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOF
           </Table>
         </div>
       </div>
+
+      {/* ShadCN Dialog for Threshold Updates */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Update CO Thresholds</DialogTitle>
+      <DialogDescription>
+        Update the percentage thresholds for CO ratings (70%, 60%, etc.).
+      </DialogDescription>
+    </DialogHeader>
+    <div className="space-y-4">
+      {["3", "2", "1"].map((coKey) => (
+        <div key={coKey} className="flex items-center gap-2">
+          <span>{coKey}</span>
+          <Input
+            value={thresholds[coKey] || ""}
+            onChange={(e) => handleThresholdChange(coKey, e.target.value)}
+            placeholder="Enter Threshold"
+            className="dark:bg-gray-800 dark:text-white bg-white border-none"
+          />
+        </div>
+      ))}
+    </div>
+    <DialogFooter>
+      <Button onClick={handleDialogClose}>Close</Button>
+      <Button
+        onClick={() => {
+          // Apply the thresholds and close the dialog
+          handleUpdateCO();  // Ensure the CO values are updated when thresholds are applied
+          handleDialogClose();
+        }}
+      >
+        Apply Thresholds
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+
       <div className="flex flex-col items-center justify-center text-center p-4">
         <div className="w-[50%] p-4">
           <TableDemo isEditable={true} data={coMin} setData={setCOMin} />
