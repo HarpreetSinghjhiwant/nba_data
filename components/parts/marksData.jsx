@@ -31,31 +31,35 @@ export function DataTableDemo({ coData, setCoData, coMin, setCOMin, coFin, setCO
   });
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [thresholds, setThresholds] = useState({});
+  const [thresholds, setThresholds] = useState({
+    "3": 70,
+    "2": 60,
+    "1": 50,
+  });
 
   const handleUpdateCO = () => {
     const totalStudents = data.length;
-  
+
     if (totalStudents === 0) {
       alert("No student data available.");
       return;
     }
-  
+
     const updatedCoFin = { ...coFin[0] };
-  
+
     Object.keys(coMin[0]).forEach((coKey) => {
       const coThreshold = parseFloat(coMin[0][coKey]);
       const studentsAboveThreshold = data.filter(
         (student) => parseFloat(student[coKey]) > coThreshold
       ).length;
-  
+
       const percentage = (studentsAboveThreshold / totalStudents) * 100;
-  
+
       // Get the latest threshold values from the state (thresholds)
-      const threshold70 = parseFloat(thresholds["3"]) || 70;
-      const threshold60 = parseFloat(thresholds["2"]) || 60;
-      const threshold50 = parseFloat(thresholds["1"]) || 50;
-  
+      const threshold70 = parseFloat(thresholds["3"]);
+      const threshold60 = parseFloat(thresholds["2"]);
+      const threshold50 = parseFloat(thresholds["1"]);
+
       if (percentage >= threshold70) {
         updatedCoFin[coKey] = "3";
       } else if (percentage >= threshold60) {
@@ -66,10 +70,10 @@ export function DataTableDemo({ coData, setCoData, coMin, setCOMin, coFin, setCO
         updatedCoFin[coKey] = "0";
       }
     });
-  
+
     setCOFin([updatedCoFin]);
   };
-  
+
 
   const handleInputChange = useCallback((rowIndex, columnId) => (e) => {
     const value = e.target.value;
@@ -272,40 +276,40 @@ export function DataTableDemo({ coData, setCoData, coMin, setCOMin, coFin, setCO
 
       {/* ShadCN Dialog for Threshold Updates */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Update CO Thresholds</DialogTitle>
-      <DialogDescription>
-        Update the percentage thresholds for CO ratings (70%, 60%, etc.).
-      </DialogDescription>
-    </DialogHeader>
-    <div className="space-y-4">
-      {["3", "2", "1"].map((coKey) => (
-        <div key={coKey} className="flex items-center gap-2">
-          <span>{coKey}</span>
-          <Input
-            value={thresholds[coKey] || ""}
-            onChange={(e) => handleThresholdChange(coKey, e.target.value)}
-            placeholder="Enter Threshold"
-            className="dark:bg-gray-800 dark:text-white bg-white border-none"
-          />
-        </div>
-      ))}
-    </div>
-    <DialogFooter>
-      <Button onClick={handleDialogClose}>Close</Button>
-      <Button
-        onClick={() => {
-          // Apply the thresholds and close the dialog
-          handleUpdateCO();  // Ensure the CO values are updated when thresholds are applied
-          handleDialogClose();
-        }}
-      >
-        Apply Thresholds
-      </Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
+        <DialogContent className="w-[300px]">
+          <DialogHeader>
+            <DialogTitle className="text-center p-2">Update CO Thresholds</DialogTitle>
+            {/* <DialogDescription>
+              Update the percentage thresholds for CO ratings (70%, 60%, etc.).
+            </DialogDescription> */}
+          </DialogHeader>
+          <div className="space-y-4">
+            {["3", "2", "1"].map((coKey) => (
+              <div key={coKey} className="flex items-center gap-2">
+                <span>{coKey}</span>
+                <Input
+                  value={thresholds[coKey] || ""}
+                  onChange={(e) => handleThresholdChange(coKey, e.target.value)}
+                  placeholder="Enter Threshold"
+                  className="dark:bg-gray-800 dark:text-white bg-white"
+                />
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button onClick={handleDialogClose}>Close</Button>
+            <Button
+              onClick={() => {
+                // Apply the thresholds and close the dialog
+                handleUpdateCO();  // Ensure the CO values are updated when thresholds are applied
+                handleDialogClose();
+              }}
+            >
+              Apply
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
 
       <div className="flex flex-col items-center justify-center text-center p-4">
