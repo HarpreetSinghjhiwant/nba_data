@@ -24,7 +24,6 @@ import { motion } from "framer-motion";
 
 const initialData = [];
 
-
 export function DataTableDemo({ coData, setCoData }) {
   const [data, setData] = useState(initialData);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -152,6 +151,7 @@ export function DataTableDemo({ coData, setCoData }) {
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder="Roll No."
+            className="dark:bg-gray-800 dark:text-white" // Dark mode styles
           />
         ),
       },
@@ -164,6 +164,7 @@ export function DataTableDemo({ coData, setCoData }) {
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder="Student Name"
+            className="dark:bg-gray-800 dark:text-white" // Dark mode styles
           />
         ),
       },
@@ -176,6 +177,7 @@ export function DataTableDemo({ coData, setCoData }) {
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder={`CO${idx + 1}`}
+            className="dark:bg-gray-800 dark:text-white" // Dark mode styles
           />
         ),
       })),
@@ -190,7 +192,7 @@ export function DataTableDemo({ coData, setCoData }) {
   });
 
   return (
-    <div className="w-full space-y-4 ">
+    <div className="w-full space-y-4 dark:bg-gray-900 dark:text-white p-4">
       <div className="flex gap-4 ">
         <Button onClick={handleAddRow}>Add Row</Button>
         <Button
@@ -202,10 +204,10 @@ export function DataTableDemo({ coData, setCoData }) {
         </Button>
         <Button onClick={handleUpdateCO}>Update CO Values</Button>
       </div>
-      <div className="rounded-md bg-white p-4 shadow-md text-center border-black border-2">
-        <div className="flex gap-4 mb-4 w-[50%]">
+      <div className="rounded-md bg-white p-4 shadow-md text-center border-black border-2 dark:bg-gray-800 dark:border-gray-700 ">
+        <div className="flex gap-4 mb-4 w-[50%] ">
           <Select onValueChange={(value) => handleFilterChange("column", value)}>
-            <SelectTrigger>
+            <SelectTrigger className="dark:border-white border-black">
               <SelectValue placeholder="Select Column" />
             </SelectTrigger>
             <SelectContent>
@@ -223,11 +225,12 @@ export function DataTableDemo({ coData, setCoData }) {
             value={filters.value}
             onChange={(e) => handleFilterChange("value", e.target.value)}
             placeholder="Filter value"
+            className="dark:bg-gray-800 dark:text-white dark:border-white border-black"
           />
         </div>
         <div className="overflow-auto max-h-[500px] ">
           <Table>
-            <TableHeader className="">
+            <TableHeader className="dark:bg-gray-800">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -248,7 +251,7 @@ export function DataTableDemo({ coData, setCoData }) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="p-2"
+                  className="p-2 dark:bg-gray-800"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <motion.td
@@ -276,4 +279,3 @@ export function DataTableDemo({ coData, setCoData }) {
     </div>
   );
 }
-

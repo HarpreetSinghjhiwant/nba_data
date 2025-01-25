@@ -48,14 +48,14 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
   return (
     <>
     <div className="p-4">
-      <Table className="rounded-xl border border-gray-200 p-4 bg-white shadow-lg">
-        <TableCaption className="text-xl font-semibold text-gray-700">
+      <Table className="rounded-xl border border-gray-200 p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
+        <TableCaption className="text-xl font-semibold text-gray-700 dark:text-gray-300">
           Direct CO - Attainment
         </TableCaption>
         <TableHeader>
-          <TableRow className="bg-gray-100">
+          <TableRow className="bg-gray-100 dark:bg-gray-700">
             {Object.keys(directData[0] || {}).map((column) => (
-              <TableHead key={column} className="text-sm text-gray-600 text-center">
+              <TableHead key={column} className="text-sm text-gray-600 text-center dark:text-gray-300">
                 {column}
               </TableHead>
             ))}
@@ -63,9 +63,9 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
         </TableHeader>
         <TableBody>
           {directData.map((row, rowIndex) => (
-            <TableRow key={rowIndex} className="hover:bg-gray-50">
+            <TableRow key={rowIndex} className="hover:bg-gray-50 dark:hover:bg-gray-600">
               {Object.keys(row).map((column) => (
-                <TableCell key={column} className="text-center">
+                <TableCell key={column} className="text-center dark:text-gray-300">
                   {row[column]}
                 </TableCell>
               ))}
@@ -73,17 +73,17 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
           ))}
         </TableBody>
       </Table>
-      </div>
+    </div>
     
     <div className="p-4">
-      <Table className="rounded-xl border border-gray-200 p-4 bg-white shadow-lg">
-        <TableCaption className="text-xl font-semibold text-gray-700">
+      <Table className="rounded-xl border border-gray-200 p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
+        <TableCaption className="text-xl font-semibold text-gray-700 dark:text-gray-300">
           Indirect CO - Attainment
         </TableCaption>
         <TableHeader>
-          <TableRow className="bg-gray-100">
+          <TableRow className="bg-gray-100 dark:bg-gray-700">
             {Object.keys(inDirectData[0] || {}).map((column) => (
-              <TableHead key={column} className="text-sm text-gray-600 text-center">
+              <TableHead key={column} className="text-sm text-gray-600 text-center dark:text-gray-300">
                 {column}
               </TableHead>
             ))}
@@ -91,9 +91,9 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
         </TableHeader>
         <TableBody>
           {inDirectData.map((row, rowIndex) => (
-            <TableRow key={rowIndex} className="hover:bg-gray-50">
+            <TableRow key={rowIndex} className="hover:bg-gray-50 dark:hover:bg-gray-600">
               {Object.keys(row).map((column) => (
-                <TableCell key={column} className="text-center">
+                <TableCell key={column} className="text-center dark:text-gray-300">
                   {row[column]}
                 </TableCell>
               ))}
@@ -101,17 +101,17 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
           ))}
         </TableBody>
       </Table>
-      </div>
+    </div>
 
-      <div className="p-4">
-      <Table className="rounded-xl border border-gray-200 p-4 bg-white shadow-lg">
-        <TableCaption className="text-xl font-semibold text-gray-700">
+    <div className="p-4">
+      <Table className="rounded-xl border border-gray-200 p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
+        <TableCaption className="text-xl font-semibold text-gray-700 dark:text-gray-300">
           Total CO - Attainment
         </TableCaption>
         <TableHeader>
-          <TableRow className="bg-gray-100">
+          <TableRow className="bg-gray-100 dark:bg-gray-700">
             {Object.keys(overallData[0] || {}).map((column) => (
-              <TableHead key={column} className="text-sm text-gray-600 text-center">
+              <TableHead key={column} className="text-sm text-gray-600 text-center dark:text-gray-300">
                 {column}
               </TableHead>
             ))}
@@ -119,9 +119,9 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
         </TableHeader>
         <TableBody>
           {overallData.map((row, rowIndex) => (
-            <TableRow key={rowIndex} className="hover:bg-gray-50">
+            <TableRow key={rowIndex} className="hover:bg-gray-50 dark:hover:bg-gray-600">
               {Object.keys(row).map((column) => (
-                <TableCell key={column} className="text-center">
+                <TableCell key={column} className="text-center dark:text-gray-300">
                   {row[column]}
                 </TableCell>
               ))}
@@ -129,7 +129,7 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
           ))}
         </TableBody>
       </Table>
-      </div>
+    </div>
 
     <div className="flex justify-center text-center">
       <ChartContainer config={chartConfig} className="min-h-[200px] w-[50%] pt-4">
@@ -153,7 +153,7 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
           </BarChart>
         </ResponsiveContainer>
       </ChartContainer>
-      </div>
+    </div>
     </>
   );
 }
