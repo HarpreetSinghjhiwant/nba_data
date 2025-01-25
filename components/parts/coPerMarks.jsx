@@ -26,7 +26,7 @@ export function TableDemo({ isEditable, data, setData }) {
   };
 
   return (
-    <Table className="rounded-xl border border-gray-200 p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
+    <Table className="rounded-xl border-2 border-black p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
       <TableCaption className="text-xl font-semibold text-gray-700 dark:text-gray-300">
         {isEditable ? "Minimum Marks Per CO" : "FINAL MARKS [CO - Attainment]"}
       </TableCaption>

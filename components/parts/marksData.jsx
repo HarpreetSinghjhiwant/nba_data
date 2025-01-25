@@ -22,22 +22,10 @@ import {
 import { TableDemo } from "./coPerMarks";
 import { motion } from "framer-motion";
 
-const initialData = [];
 
-export function DataTableDemo({ coData, setCoData }) {
-  const [data, setData] = useState(initialData);
+export function DataTableDemo({ coData, setCoData, coMin,setCOMin, coFin, setCOFin }) {
+  const [data, setData] = [coData, setCoData];
   const [selectedRows, setSelectedRows] = useState([]);
-  const [coMin, setCoMin] = useState([
-    {
-      CO1: "1",
-      CO2: "1",
-      CO3: "1",
-      CO4: "1",
-      CO5: "1",
-      CO6: "1",
-    },
-  ]);
-  const [coFin, setCoFin] = [coData, setCoData];
   const [filters, setFilters] = useState({
     column: "",
     value: "",
@@ -72,7 +60,7 @@ export function DataTableDemo({ coData, setCoData }) {
       }
     });
 
-    setCoFin([updatedCoFin]);
+    setCOFin([updatedCoFin]);
   };
 
   const memoizedData = useMemo(() => {
@@ -151,7 +139,7 @@ export function DataTableDemo({ coData, setCoData }) {
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder="Roll No."
-            className="dark:bg-gray-800 dark:text-white" // Dark mode styles
+            className="dark:bg-gray-800 dark:text-white border-none bg-white" // Dark mode styles
           />
         ),
       },
@@ -164,7 +152,7 @@ export function DataTableDemo({ coData, setCoData }) {
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder="Student Name"
-            className="dark:bg-gray-800 dark:text-white" // Dark mode styles
+            className="dark:bg-gray-800 dark:text-white border-none bg-white" // Dark mode styles
           />
         ),
       },
@@ -177,7 +165,7 @@ export function DataTableDemo({ coData, setCoData }) {
             onClick={(e) => e.stopPropagation()} // Prevent collapse on input click
             onChange={handleInputChange(row.index, column.id)}
             placeholder={`CO${idx + 1}`}
-            className="dark:bg-gray-800 dark:text-white" // Dark mode styles
+            className="dark:bg-gray-800 dark:text-white bg-white border-none" // Dark mode styles
           />
         ),
       })),
@@ -270,10 +258,10 @@ export function DataTableDemo({ coData, setCoData }) {
       </div>
       <div className="flex flex-col items-center justify-center text-center p-4">
         <div className="w-[50%] p-4">
-          <TableDemo isEditable={true} data={coMin} setData={setCoMin} />
+          <TableDemo isEditable={true} data={coMin} setData={setCOMin} />
         </div>
         <div className="w-[50%] p-4">
-          <TableDemo isEditable={false} data={coFin} setData={setCoFin} />
+          <TableDemo isEditable={false} data={coFin} setData={setCOFin} />
         </div>
       </div>
     </div>

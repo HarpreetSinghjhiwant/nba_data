@@ -48,7 +48,7 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
   return (
     <>
     <div className="p-4">
-      <Table className="rounded-xl border border-gray-200 p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
+      <Table className="rounded-xl border-2 border-black p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
         <TableCaption className="text-xl font-semibold text-gray-700 dark:text-gray-300">
           Direct CO - Attainment
         </TableCaption>
@@ -76,7 +76,7 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
     </div>
     
     <div className="p-4">
-      <Table className="rounded-xl border border-gray-200 p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
+      <Table className="rounded-xl border-2 border-black p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
         <TableCaption className="text-xl font-semibold text-gray-700 dark:text-gray-300">
           Indirect CO - Attainment
         </TableCaption>
@@ -104,7 +104,7 @@ export function FinalCOMarks({ directData, inDirectData, overallData }) {
     </div>
 
     <div className="p-4">
-      <Table className="rounded-xl border border-gray-200 p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
+      <Table className="rounded-xl border-2 border-black p-4 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg">
         <TableCaption className="text-xl font-semibold text-gray-700 dark:text-gray-300">
           Total CO - Attainment
         </TableCaption>

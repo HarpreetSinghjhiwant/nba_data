@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"; // Import ShadCN Tabs components
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion"; // Import motion from framer-motion
+import { ModeToggle } from "@/components/parts/modeToggle";
 
 export default function Home() {
   const [min1CO, setMin1CO] = useState([
@@ -18,6 +19,53 @@ export default function Home() {
       CO6: "0",
     },
   ]);
+
+  const [min1COMin, setMin1COMin] = useState([
+    {
+      CO1: "1",
+      CO2: "1",
+      CO3: "1",
+      CO4: "1",
+      CO5: "1",
+      CO6: "1",
+    },
+  ]);
+  const [min2COMin, setMin2COMin] = useState([
+    {
+      CO1: "1",
+      CO2: "1",
+      CO3: "1",
+      CO4: "1",
+      CO5: "1",
+      CO6: "1",
+    },
+  ]);
+  const [assCOMin, setAssCOMin] = useState([
+    {
+      CO1: "1",
+      CO2: "1",
+      CO3: "1",
+      CO4: "1",
+      CO5: "1",
+      CO6: "1",
+    },
+  ]);
+  const [finCOMin, setFinCOMin] = useState([
+    {
+      CO1: "1",
+      CO2: "1",
+      CO3: "1",
+      CO4: "1",
+      CO5: "1",
+      CO6: "1",
+    },
+  ]);
+
+  const [min1Data,setMin1Data] = useState([]);
+  const [min2Data,setMin2Data] = useState([]);
+  const [assData,setAssData] = useState([]);
+  const [finData,setFinData] = useState([]);
+
   const [min2CO, setMin2CO] = useState([
     {
       CO1: "0",
@@ -168,6 +216,7 @@ export default function Home() {
           <TabsTrigger className="text-xl px-6 py-3" value="assignment">Assignment</TabsTrigger>
           <TabsTrigger className="text-xl px-6 py-3" value="final">Final</TabsTrigger>
           <TabsTrigger className="text-xl px-6 py-3" value="finalCO">Final CO Calculation</TabsTrigger>
+          <ModeToggle/>
         </TabsList>
 
         <TabsContent value="minor1">
@@ -182,7 +231,7 @@ export default function Home() {
                 <CardTitle>Student Minor 1</CardTitle>
               </CardHeader>
               <CardContent>
-                <DataTableDemo coData={min1CO} setCoData={setMin1CO} />
+                <DataTableDemo coData={min1Data} setCoData={setMin1Data} coMin={min1COMin} setCOMin={setMin1COMin} coFin={min1CO} setCOFin={setMin1CO}/>
               </CardContent>
             </Card>
           </motion.div>
@@ -200,7 +249,7 @@ export default function Home() {
                 <CardTitle>Student Minor 2</CardTitle>
               </CardHeader>
               <CardContent>
-                <DataTableDemo coData={min2CO} setCoData={setMin2CO} />
+              <DataTableDemo coData={min2Data} setCoData={setMin2Data} coMin={min2COMin} setCOMin={setMin2COMin} coFin={min2CO} setCOFin={setMin2CO}/>
               </CardContent>
             </Card>
           </motion.div>
@@ -218,7 +267,7 @@ export default function Home() {
                 <CardTitle>Student Assignment</CardTitle>
               </CardHeader>
               <CardContent>
-                <DataTableDemo coData={assCO} setCoData={setassCO} />
+              <DataTableDemo coData={assData} setCoData={setAssData} coMin={assCOMin} setCOMin={setAssCOMin} coFin={assCO} setCOFin={setassCO}/>
               </CardContent>
             </Card>
           </motion.div>
@@ -236,7 +285,7 @@ export default function Home() {
                 <CardTitle>Student Final</CardTitle>
               </CardHeader>
               <CardContent>
-                <DataTableDemo coData={finCO} setCoData={setfinCO} />
+              <DataTableDemo coData={finData} setCoData={setFinData} coMin={finCOMin} setCOMin={setFinCOMin} coFin={finCO} setCOFin={setfinCO}/>
               </CardContent>
             </Card>
           </motion.div>
